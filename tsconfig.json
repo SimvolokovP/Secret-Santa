@@ -1,9 +1,10 @@
 {  
   "compilerOptions": {  
+    "allowImportingTsExtensions": true,  
+    "noEmit": true, // Add this line  
     "target": "es5", // or a later version, like "es6" or "esnext"  
     "module": "commonjs", // or "esnext", depending on your setup  
     "jsx": "react-jsx", // This enables JSX support for React 17 and above  
-    // or use "react" if your project is using an older version of React  
     "strict": true,  
     "esModuleInterop": true,  
     "skipLibCheck": true,  
