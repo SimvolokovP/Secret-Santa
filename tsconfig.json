@@ -1,0 +1,19 @@
+{  
+  "compilerOptions": {  
+    "target": "es5", // or a later version, like "es6" or "esnext"  
+    "module": "commonjs", // or "esnext", depending on your setup  
+    "jsx": "react-jsx", // This enables JSX support for React 17 and above  
+    // or use "react" if your project is using an older version of React  
+    "strict": true,  
+    "esModuleInterop": true,  
+    "skipLibCheck": true,  
+    "resolveJsonModule": true,  
+    "baseUrl": "./",  
+    "paths": {  
+      "*": ["node_modules/*", "src/types/*"] // Adjust as needed  
+    },  
+    "types": ["telegram-webapps"] // If applicable  
+  },  
+  "include": ["src/**/*"], // Adjust according to your source directory  
+  "exclude": ["node_modules", "**/*.spec.ts"]  
+}  

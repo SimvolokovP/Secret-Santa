@@ -1,0 +1,28 @@
+.home-page {
+  background-image: url("./main.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+
+  &__info {
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    &--text {
+      font-size: 20px;
+      color: orange;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    width: 100%;
+    justify-content: end;
+  }
+}

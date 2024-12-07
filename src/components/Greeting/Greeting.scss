@@ -1,0 +1,21 @@
+.greeting {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+
+  &__title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    color: var(--accent-color);
+
+    & span {
+      font-weight: 400;
+      font-size: 24px;
+      color: red;
+    }
+  }
+}
