@@ -10,7 +10,21 @@ export const getUsername = (tgUser: TelegramWebApps.WebAppUser) => {
   return "Unknown";
 };
 
-const THREE_DAYS_IN_MS =  60 * 60 * 1000;
-const NOW_IN_MS = new Date().getTime();
+export const formattedDate = (isoString: string) => {
+  const date = new Date(isoString);
 
-export const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS;
+  const formattedDate =
+    String(date.getDate()).padStart(2, "0") +
+    "." +
+    String(date.getMonth() + 1).padStart(2, "0") +
+    "." +
+    date.getFullYear() +
+    " " +
+    String(date.getHours()).padStart(2, "0") +
+    ":" +
+    String(date.getMinutes()).padStart(2, "0");
+
+  return formattedDate;
+};
+
+export const newYearDate = "2025-01-01T00:00:00Z";

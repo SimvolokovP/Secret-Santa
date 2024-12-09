@@ -5,7 +5,7 @@ import DateTimeDisplay from "../DateTimeDisplay/DateTimeDisplay";
 import "./CountdownTimer.scss";
 
 interface CountdownTimerProps {
-  targetDate: number;
+  targetDate: string;
 }
 
 const CountdownTimer: FC<CountdownTimerProps> = ({ targetDate }) => {

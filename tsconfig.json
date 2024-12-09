@@ -1,20 +1,21 @@
 {  
   "compilerOptions": {  
     "allowImportingTsExtensions": true,  
-    "noEmit": true, // Add this line  
-    "target": "es5", // or a later version, like "es6" or "esnext"  
-    "module": "commonjs", // or "esnext", depending on your setup  
-    "jsx": "react-jsx", // This enables JSX support for React 17 and above  
+    "noEmit": true, // Эта строка предотвращает генерацию выходных файлов  
+    "target": "esnext", // Установите на esnext или es2020, чтобы использовать современные функции  
+    "module": "esnext", // Используйте esnext для поддержки import.meta  
+    "moduleResolution": "node", // Измените на node для поддержки resolveJsonModule  
+    "jsx": "react-jsx", // Это включает поддержку JSX для React 17 и выше  
     "strict": true,  
     "esModuleInterop": true,  
     "skipLibCheck": true,  
     "resolveJsonModule": true,  
     "baseUrl": "./",  
     "paths": {  
-      "*": ["node_modules/*", "src/types/*"] // Adjust as needed  
+      "*": ["node_modules/*", "src/types/*"] // Настройте по мере необходимости  
     },  
-    "types": ["telegram-webapps"] // If applicable  
+    "types": ["telegram-webapps"] // Если это применимо  
   },  
-  "include": ["src/**/*"], // Adjust according to your source directory  
+  "include": ["src/**/*"], // Настройте в соответствии с вашим каталогом исходников  
   "exclude": ["node_modules", "**/*.spec.ts"]  
-}  
+}

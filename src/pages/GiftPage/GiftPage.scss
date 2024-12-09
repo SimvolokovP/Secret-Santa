@@ -1,0 +1,21 @@
+.gift-page {
+  background-color: rgb(136, 32, 32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__cover {
+    width: 155px;
+    animation: 0.8s infinite moved;
+  }
+}
+
+@keyframes moved {
+  from {
+    transform: rotateY(-45deg);
+  }
+
+  to {
+    transform: rotateY(+45deg);
+  }
+}
