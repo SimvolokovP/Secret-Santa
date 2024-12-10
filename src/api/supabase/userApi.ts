@@ -1,5 +1,6 @@
 import { IUser } from "../../models/IUser";
 import supabase from "../../database/supabase/supabase";
+import { IForm } from "../../models/IForm";
 
 export default class UserService {
   static async getByTgId(tg_id: number) {
@@ -21,6 +22,20 @@ export default class UserService {
     return user;
   }
 
+  static async getAllUsers() {
+    const { data: users, error } = await supabase.from("users").select(`  
+        *,  
+        form:form(wishList, name)  
+      `);
+
+    if (error) {
+      console.error("Error getting users:", error);
+      throw new Error("Failed to get users.");
+    }
+
+    return users;
+  }
+
   static async getById(id: number) {
     const { data: user, error } = await supabase
       .from("users")
@@ -40,33 +55,57 @@ export default class UserService {
     return user;
   }
 
-  static async insertNewUser(newUser: IUser) {
-    const { data: insertedUser, error } = await supabase
+  static async insertNewUser(tg_id: number, formData: IForm) {
+
+    const newUser: IUser = {
+      tg_id: tg_id,
+      giftTo: null,
+      created_at: new Date().toISOString(),
+    };
+
+    const { data: insertedUser, error: userError } = await supabase
       .from("users")
       .insert([newUser])
       .select("*")
       .single();
 
-    if (error) {
-      console.error("Insert Error:", error);
+    if (userError) {
+      console.error("Insert User Error:", userError);
       throw new Error("Failed to insert user.");
     }
 
+    // const formData = {
+    //   user_id: insertedUser.id,
+    //   name: "",
+    //   text: "",
+    //   wishList: "",
+    // };
+
+    formData.user_id = insertedUser.id;
+
+    const { error: formError } = await supabase.from("form").insert([formData]);
+
+    if (formError) {
+      console.error("Insert Form Error:", formError);
+      throw new Error("Failed to insert form entry.");
+    }
+    insertedUser.form = formData;
     return insertedUser;
   }
 
   static async logIn(tg_id: number) {
     try {
-      let user = await this.getByTgId(tg_id);
+      const user = await this.getByTgId(tg_id);
 
-      if (!user) {
-        const newUser: IUser = {
-          tg_id: tg_id,
-          giftTo: null,
-          created_at: new Date().toISOString(),
-        };
-        user = await this.insertNewUser(newUser);
-      }
+      // if (!user) {
+      //   const newUser: IUser = {
+      //     tg_id: tg_id,
+      //     giftTo: null,
+      //     created_at: new Date().toISOString(),
+      //   };
+      //   user = await this.insertNewUser(newUser);
+      // }
+      console.log(user);
       return user;
     } catch (error) {
       console.error("Error in logIn:", error);

@@ -1,0 +1,25 @@
+.loading-screen {
+  background-color: green;
+  position: fixed;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  right: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-direction: column;
+  z-index: 10;
+  overflow: hidden;
+
+  &__image {
+    width: 150px;
+    height: 150px;
+  }
+
+  &__text {
+    font-size: 32px;
+  }
+}

@@ -3,10 +3,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 
   &__cover {
-    width: 155px;
-    animation: 0.8s infinite moved;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    & img {
+      width: 135px;
+      animation: 0.8s infinite moved;
+    }
   }
 }
 

@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
 import { IRoom } from "../models/IRoom";
 import RoomsService from "../api/supabase/roomsApi";
-
-type OperationStatus = {
-  loading: boolean;
-  error: string | null;
-};
+import { TOperationStatus } from "../models/TOperationStatus";
 
 const useRooms = () => {
   const [currentRoom, setCurrentRoom] = useState<IRoom | null>(null);
-  const [status, setStatus] = useState<OperationStatus>({
+  const [roomsStatus, setStatus] = useState<TOperationStatus>({
     loading: false,
     error: null,
   });
 
   const getRoom = async () => {
     try {
+      setStatus((prev) => ({ ...prev, loading: true }));
       //if user
       const room = await RoomsService.getById(1);
       setCurrentRoom(room);
@@ -34,7 +31,7 @@ const useRooms = () => {
 
   return {
     currentRoom,
-    status,
+    roomsStatus,
     getRoom,
   };
 };
