@@ -9,9 +9,12 @@ import { formattedDate } from "../../utils/utils";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import RoomDescr from "../../components/RoomDescr/RoomDescr";
 import UsersList from "../../components/UsersList/UsersList";
+import HomeScreenBtn from "../../components/HomeScreenBtn/HomeScreenBtn";
+import ShareBtn from "../../components/ShareBtn/ShareBtn";
 
 const GiftPage: FC = () => {
-  const { currentUser, secretFriend, getSecretFriend, userStatus, usersList } = useUser();
+  const { currentUser, secretFriend, getSecretFriend, userStatus, usersList } =
+    useUser();
   const { currentRoom, roomsStatus } = useRooms();
 
   const compareTimestamp = (isoString: string) => {
@@ -47,7 +50,7 @@ const GiftPage: FC = () => {
                   />
                 </>
               ) : (
-                <div>
+                <div className="gift-page__time">
                   Игра не началась. Ожидайте{" "}
                   {currentRoom?.start_time ? (
                     formattedDate(currentRoom?.start_time)
@@ -57,7 +60,14 @@ const GiftPage: FC = () => {
                 </div>
               )}
             </div>
-            <UsersList list={usersList} />
+            <div className="gift-page__list">
+              <div>Уже в игре: </div>
+              <UsersList list={usersList} />
+            </div>
+            <div className="gift-page__actions">
+              <HomeScreenBtn />
+              <ShareBtn />
+            </div>
           </div>
         </div>
       )}

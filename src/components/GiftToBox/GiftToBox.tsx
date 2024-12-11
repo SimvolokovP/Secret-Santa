@@ -32,7 +32,7 @@ const GiftToBox: FC<GiftToBoxProps> = ({
           )}
         </div>
       ) : (
-        <span>GiftTo not found!</span>
+        <span>Не успел на распределение</span>
       )}
     </div>
   );

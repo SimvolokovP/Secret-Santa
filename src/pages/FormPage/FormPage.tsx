@@ -1,61 +1,58 @@
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { IForm } from "../../models/IForm";
 import useUser from "../../hooks/useUser";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
+import "./FormPage.scss";
+
 const FormPage: FC = () => {
-  const [formData, setFormData] = useState<IForm>({
-    name: "",
-    text: "",
-    wishList: "",
-  });
+  const { createUser, userStatus, currentUser, updateUserForm } = useUser();
 
-  const { createUser, userStatus } = useUser();
+  const { register, handleSubmit, setValue } = useForm<IForm>();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  useEffect(() => {
+    if (currentUser && currentUser.form && currentUser.form.length > 0) {
+      const { name, text, wishList } = currentUser.form[0];
+      setValue("name", name);
+      setValue("text", text);
+      setValue("wishList", wishList);
+    }
+  }, [currentUser, setValue]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await createUser(formData);
-    window.location.reload(); //hmhmhmh
+  const onSubmit = async (data: IForm) => {
+    if (currentUser) {
+      await updateUserForm(data);
+    } else {
+      await createUser(data);
+      window.location.reload();
+    }
   };
 
   return userStatus.loading ? (
     <LoadingScreen />
   ) : (
     <div className="page form-page">
+      <div className="absolute ball-absolute">
+        <img src="/ball.png" alt="red ball" />
+      </div>
       <div className="container">
-        <form onSubmit={handleSubmit}>
+        <form className="user-form" onSubmit={handleSubmit(onSubmit)}>
           <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
+            {...register("name", { required: true })}
             placeholder="Enter your name"
-            required
           />
           <textarea
-            name="text"
-            value={formData.text}
-            onChange={handleChange}
+            {...register("text", { required: true })}
             placeholder="Enter main text"
-            required
           />
           <textarea
-            name="wishList"
-            value={formData.wishList}
-            onChange={handleChange}
+            {...register("wishList", { required: true })}
             placeholder="Enter wishlist"
-            required
           />
-          <button type="submit">123</button>
+          <button type="submit">
+            {currentUser ? "Обновить" : "Сохранить"}
+          </button>
         </form>
       </div>
     </div>

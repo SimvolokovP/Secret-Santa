@@ -34,9 +34,27 @@ const useUser = () => {
   const createUser = async (formData: IForm) => {
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
-      const createdInUser = await UserService.insertNewUser(user?.id || 123, formData);
+      const createdInUser = await UserService.insertNewUser(
+        user?.id || 123,
+        formData
+      );
       setCurrentUser(createdInUser);
       console.log(createdInUser);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setStatus((prev) => ({ ...prev, error: errorMessage }));
+    } finally {
+      setStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+  
+  const updateUserForm = async (formData: IForm) => {
+    try {
+      if (currentUser && currentUser.id) {
+        setStatus((prev) => ({ ...prev, loading: true }));
+        await UserService.updateFormByUserId(currentUser?.id, formData);
+      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred";
@@ -89,7 +107,8 @@ const useUser = () => {
     getSecretFriend,
     secretFriend,
     usersList,
-    createUser
+    createUser,
+    updateUserForm,
   };
 };
 

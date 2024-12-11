@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { IUser } from "../../models/IUser";
 
-import './UsersList.scss';
+import "./UsersList.scss";
 
 interface UsersListProps {
   list: IUser[] | [];
@@ -10,10 +10,12 @@ interface UsersListProps {
 const UsersList: FC<UsersListProps> = ({ list }) => {
   return (
     <ul className="list-reset users-list">
-      {list.map((user) => (
+      {list.map((user, index) => (
         <li key={user.id}>
           {user.form && user.form[0]?.name ? (
-            <div>{user?.form[0]?.name}</div>
+            <div>
+              {index + 1}. {user?.form[0]?.name}
+            </div>
           ) : (
             <span>{user.id}</span>
           )}

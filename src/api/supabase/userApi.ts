@@ -9,7 +9,7 @@ export default class UserService {
       .select(
         `  
         *,  
-        form:form(wishList, name) 
+        form:form(wishList, name, text) 
       `
       )
       .eq("tg_id", tg_id)
@@ -25,7 +25,7 @@ export default class UserService {
   static async getAllUsers() {
     const { data: users, error } = await supabase.from("users").select(`  
         *,  
-        form:form(wishList, name)  
+        form:form(wishList, name, text)  
       `);
 
     if (error) {
@@ -42,7 +42,7 @@ export default class UserService {
       .select(
         `  
         *,  
-        form:form(wishList, name) 
+        form:form(wishList, name, text) 
       `
       )
       .eq("id", id)
@@ -56,7 +56,6 @@ export default class UserService {
   }
 
   static async insertNewUser(tg_id: number, formData: IForm) {
-
     const newUser: IUser = {
       tg_id: tg_id,
       giftTo: null,
@@ -91,6 +90,25 @@ export default class UserService {
     }
     insertedUser.form = formData;
     return insertedUser;
+  }
+
+  static async updateFormByUserId(userId: number, formData: IForm) {
+    const { data: updatedForm, error } = await supabase
+      .from("form")
+      .update({
+        wishList: formData.wishList,
+        name: formData.name,
+        text: formData.text,
+      })
+      .eq("user_id", userId)
+      .single();
+
+    if (error) {
+      console.error("Update Form Error:", error);
+      throw new Error("Failed to update form entry.");
+    }
+
+    return updatedForm;
   }
 
   static async logIn(tg_id: number) {
