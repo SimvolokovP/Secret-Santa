@@ -37,15 +37,19 @@ const FormPage: FC = () => {
         <img src="/ball.png" alt="red ball" />
       </div>
       <div className="container">
+        <h3>Заполни анкету: </h3>
         <form className="user-form" onSubmit={handleSubmit(onSubmit)}>
+          <span>Имя: </span>
           <input
             {...register("name", { required: true })}
             placeholder="Enter your name"
           />
+          <span>Поздравление друзьям: </span>
           <textarea
             {...register("text", { required: true })}
             placeholder="Enter main text"
           />
+          <span>Твой wish-list: </span>
           <textarea
             {...register("wishList", { required: true })}
             placeholder="Enter wishlist"
