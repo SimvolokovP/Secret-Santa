@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IForm } from "../../models/IForm";
 import useUser from "../../hooks/useUser";
@@ -9,7 +9,16 @@ import "./FormPage.scss";
 const FormPage: FC = () => {
   const { createUser, userStatus, currentUser, updateUserForm } = useUser();
 
-  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { isValid, dirtyFields },
+  } = useForm<IForm>({
+    mode: "onChange",
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (currentUser && currentUser.form && currentUser.form.length > 0) {
@@ -17,6 +26,7 @@ const FormPage: FC = () => {
       setValue("name", name);
       setValue("text", text);
       setValue("wishList", wishList);
+      setIsEditing(true);
     }
   }, [currentUser, setValue]);
 
@@ -25,37 +35,46 @@ const FormPage: FC = () => {
       await updateUserForm(data);
     } else {
       await createUser(data);
-      window.location.reload();
     }
+    window.location.reload();
   };
 
   return userStatus.loading ? (
     <LoadingScreen />
   ) : (
     <div className="page form-page">
-      <div className="absolute ball-absolute">
-        <img src="/ball.png" alt="red ball" />
-      </div>
       <div className="container">
-        <h3>Заполни анкету: </h3>
+        <h3 className="form-page__title">Заполни анкету: </h3>
         <form className="user-form" onSubmit={handleSubmit(onSubmit)}>
-          <span>Имя: </span>
-          <input
-            {...register("name", { required: true })}
-            placeholder="Enter your name"
-          />
-          <span>Поздравление друзьям: </span>
-          <textarea
-            {...register("text", { required: true })}
-            placeholder="Enter main text"
-          />
-          <span>Твой wish-list: </span>
-          <textarea
-            {...register("wishList", { required: true })}
-            placeholder="Enter wishlist"
-          />
-          <button type="submit">
-            {currentUser ? "Обновить" : "Сохранить"}
+          <label className="user-form__label">
+            <span>Имя: </span>
+            <input
+              {...register("name", { required: true })}
+              placeholder="Вадим Попов"
+            />
+          </label>
+          <label className="user-form__label">
+            <span>Поздравление друзьям: </span>
+            <textarea
+              {...register("text", { required: true })}
+              placeholder="С Новым годом поздравляем, Счастья в жизни Вам желаем, Много добрых пожеланий, Исполненья всех мечтаний!"
+            />
+          </label>
+          <label className="user-form__label">
+            <span>Твой wish-list: </span>
+            <textarea
+              {...register("wishList", { required: true })}
+              placeholder="Руль, настольная игра, ароматическая свеча"
+            />
+          </label>
+          <button
+            className="btn-reset btn user-form__submit"
+            type="submit"
+            disabled={
+              !isValid || (isEditing && Object.keys(dirtyFields).length === 0)
+            }
+          >
+            {currentUser && currentUser.form?.length ? "Обновить" : "Сохранить"}
           </button>
         </form>
       </div>

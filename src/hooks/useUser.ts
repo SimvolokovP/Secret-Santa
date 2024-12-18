@@ -79,6 +79,21 @@ const useUser = () => {
     }
   };
 
+  const getUsersListByRoom = async (room_id: number) => {
+    try {
+      setStatus((prev) => ({ ...prev, loading: true }));
+      //if user
+      const users = await UserService.getAllUsersByRoom(room_id);
+      setUsersList(users);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setStatus((prev) => ({ ...prev, error: errorMessage }));
+    } finally {
+      setStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
   const getSecretFriend = async () => {
     if (currentUser && currentUser.giftTo) {
       try {
@@ -97,7 +112,7 @@ const useUser = () => {
 
   useEffect(() => {
     logIn(); //if user
-    getUsersList();
+    // getUsersList();
   }, [user]);
 
   return {
@@ -109,6 +124,8 @@ const useUser = () => {
     usersList,
     createUser,
     updateUserForm,
+    getUsersList,
+    getUsersListByRoom
   };
 };
 

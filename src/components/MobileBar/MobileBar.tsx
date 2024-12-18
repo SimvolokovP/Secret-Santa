@@ -15,7 +15,7 @@ const MobileBar = () => {
                 }
                 to={link.to}
               >
-                <img src={`${link.icon}.png`} alt={link.text} />
+                <img src={`${link.icon}.svg`} alt={link.text} />
                 {link.text}
               </NavLink>
             </li>

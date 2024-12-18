@@ -3,8 +3,7 @@ import "./LoadingScreen.scss";
 const LoadingScreen = () => {
   return (
     <div className="loading-screen">
-      <img src="/santa.png" alt="santa" />
-      <div className="loading-screen__text">Secret santa</div>
+      <img className="loading-screen__image" src="/loader.png" alt="santa" />
     </div>
   );
 };

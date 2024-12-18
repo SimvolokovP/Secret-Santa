@@ -1,12 +1,21 @@
 .home-page {
-  background-image: url("/main.png");
+  background-color: #F3E3CA;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   overflow: hidden;
   position: relative;
 
+  &__container {
+    height: 100%;
+  }
+
+  &__hero {
+    width: 264px;
+  }
+
   &__info {
+    height: 100%;
     padding-top: 25px;
     display: flex;
     flex-direction: column;
@@ -16,8 +25,10 @@
 
     &--text {
       font-size: 20px;
-      color: orange;
+      color: #543930;
+      font-weight: 800;
     }
+
   }
 
   &__actions {

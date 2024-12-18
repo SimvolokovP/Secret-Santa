@@ -15,4 +15,20 @@ export default class RoomsService {
 
     return room;
   }
+
+  static async getUserInRoom(room_id: number, user_id: number) {
+    const { data: userInRoom, error } = await supabase
+      .from("users_rooms")
+      .select("*")
+      .eq("user_id", user_id)
+     
+      .single();
+
+    if (error && error.code !== "PGRST116") {
+      console.error("Error getting user:", error);
+      throw new Error("Failed to get user.");
+    }
+
+    return userInRoom;
+  }
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MobileBar from "./components/MobileBar/MobileBar";
 import { useTg } from "./hooks/useTg";
 import AppRoutes from "./router/AppRouter";
@@ -10,15 +10,19 @@ function App() {
   const { currentUser } = useUser();
   const navigate = useNavigate();
 
+  const [isUser, setIsUser] = useState<boolean>(false);
+
   useEffect(() => {
     tg.ready();
     tg.expand();
   }, []);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser || !currentUser.form?.length) {
+      setIsUser(false);
       navigate("/form");
     } else {
+      setIsUser(true);
       navigate("/");
     }
     console.log(currentUser);
@@ -28,7 +32,7 @@ function App() {
     <>
       <main>
         <AppRoutes />
-        { currentUser ? <MobileBar /> : <></> }
+        {isUser ? <MobileBar /> : <></>}
       </main>
     </>
   );

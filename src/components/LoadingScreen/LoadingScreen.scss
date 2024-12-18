@@ -1,5 +1,5 @@
 .loading-screen {
-  background-color: green;
+  background-color: #697947;
   position: fixed;
   display: flex;
   top: 0;
@@ -15,8 +15,7 @@
   overflow: hidden;
 
   &__image {
-    width: 150px;
-    height: 150px;
+    width: 312px;
   }
 
   &__text {

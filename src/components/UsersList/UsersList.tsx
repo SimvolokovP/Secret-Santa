@@ -10,7 +10,7 @@ interface UsersListProps {
 const UsersList: FC<UsersListProps> = ({ list }) => {
   return (
     <ul className="list-reset users-list">
-      {list.map((user, index) => (
+      {list.filter(user => user.form?.length).map((user, index) => (
         <li key={user.id}>
           {user.form && user.form[0]?.name ? (
             <div>

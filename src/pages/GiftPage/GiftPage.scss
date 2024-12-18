@@ -1,5 +1,5 @@
 .gift-page {
-  background-color: rgb(136, 32, 32);
+  background-color: #F3E3CA;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,8 +11,7 @@
     gap: 15px;
     align-items: center;
     & img {
-      width: 135px;
-      animation: 0.8s infinite moved;
+      width: 109px;
     }
   }
 
@@ -25,7 +24,12 @@
   }
 
   &__time {
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    max-width: 340px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #543930;
   }
 
   &__list {
@@ -33,15 +37,5 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
-  }
-}
-
-@keyframes moved {
-  from {
-    transform: rotateY(-45deg);
-  }
-
-  to {
-    transform: rotateY(+45deg);
   }
 }

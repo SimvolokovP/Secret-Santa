@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import "./GiftPage.scss";
 import GiftToBox from "../../components/GiftToBox/GiftToBox";
@@ -13,8 +13,14 @@ import HomeScreenBtn from "../../components/HomeScreenBtn/HomeScreenBtn";
 import ShareBtn from "../../components/ShareBtn/ShareBtn";
 
 const GiftPage: FC = () => {
-  const { currentUser, secretFriend, getSecretFriend, userStatus, usersList } =
-    useUser();
+  const {
+    currentUser,
+    secretFriend,
+    getSecretFriend,
+    userStatus,
+    usersList,
+    getUsersListByRoom,
+  } = useUser();
   const { currentRoom, roomsStatus } = useRooms();
 
   const compareTimestamp = (isoString: string) => {
@@ -28,6 +34,14 @@ const GiftPage: FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (currentRoom && currentRoom.id) {
+      getUsersListByRoom(currentRoom?.id);
+    }
+  }, [currentRoom]);
+
+
+
   return (
     <>
       {userStatus.loading || roomsStatus.loading ? (
@@ -37,8 +51,8 @@ const GiftPage: FC = () => {
           <div className="container">
             <RoomDescr currentRoom={currentRoom} />
             <div className="gift-page__cover">
-              <img src="/giftbig.png" alt="gift" />
-
+              <img src="/treeBig.png" alt="gift" />
+              
               {currentRoom?.start_time &&
               !compareTimestamp(currentRoom?.start_time) ? (
                 <>
@@ -51,7 +65,7 @@ const GiftPage: FC = () => {
                 </>
               ) : (
                 <div className="gift-page__time">
-                  Игра не началась. Ожидайте{" "}
+                  Играx еще не началась. Ожидайте{" "}
                   {currentRoom?.start_time ? (
                     formattedDate(currentRoom?.start_time)
                   ) : (
@@ -61,7 +75,6 @@ const GiftPage: FC = () => {
               )}
             </div>
             <div className="gift-page__list">
-              <div>Уже в игре: </div>
               <UsersList list={usersList} />
             </div>
             <div className="gift-page__actions">

@@ -3,4 +3,6 @@ export interface IRoom {
   created_at?: string;
   name: string;
   start_time: string;
+  is_start: boolean;
 }
+

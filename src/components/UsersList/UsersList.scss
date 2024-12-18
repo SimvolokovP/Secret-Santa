@@ -1,11 +1,17 @@
 .users-list {
     width: 100%;
-    border: 2px solid rgb(251, 168, 13);
+    background-color: #FFFFFF;
     border-radius: 8px;
-    padding: 8px;
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
     height: 150px;
     overflow-y: auto;
+    color: #543930;
+    font-weight: 500;
+
+    & li {
+        font-size: 14px;
+    }
 }

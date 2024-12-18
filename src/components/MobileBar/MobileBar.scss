@@ -21,22 +21,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    font-size: 10px;
+    justify-content: center;
+    font-size: 12px;
     gap: 4px;
-    text-transform: uppercase;
-    font-weight: 500;
-    border: 2px solid rgb(250, 219, 162);
-    width: 73px;
-    border-radius: 4px;
+    font-weight: 600;
+    width: 84px;
+    height: 84px;
+    border-radius: 12px;
+    background-color: #faf8ed;
+    color: #543930;
 
     & img {
-      width: 62px;
+      height: 54px;
     }
 
     &.active {
-      color: var(--accent-color);
-      border: 2px solid rgb(251, 168, 13);
+      -webkit-box-shadow: 4px 4px 0px 0px rgba(219, 79, 64, 1);
+      -moz-box-shadow: 4px 4px 0px 0px rgba(219, 79, 64, 1);
+      box-shadow: 4px 4px 0px 0px rgba(219, 79, 64, 1);
 
       & img {
         animation: 0.8s forwards rotate;

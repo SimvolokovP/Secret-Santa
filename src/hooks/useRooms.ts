@@ -25,6 +25,23 @@ const useRooms = () => {
     }
   };
 
+  const getUserInRoom = async (user_id: number) => {
+    try {
+      setStatus((prev) => ({ ...prev, loading: true }));
+      //if user
+      if (currentRoom && currentRoom.id) {
+        const room = await RoomsService.getUserInRoom(currentRoom?.id, user_id);
+        return room;
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setStatus((prev) => ({ ...prev, error: errorMessage }));
+    } finally {
+      setStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
   useEffect(() => {
     getRoom();
   }, []);
@@ -33,6 +50,7 @@ const useRooms = () => {
     currentRoom,
     roomsStatus,
     getRoom,
+    getUserInRoom
   };
 };
 

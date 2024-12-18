@@ -36,6 +36,35 @@ export default class UserService {
     return users;
   }
 
+  static async getAllUsersByRoom(room_id: number) {  
+    const { data: userIds, error: userIdError } = await supabase  
+      .from("users_rooms")  
+      .select("user_id")  
+      .eq("room_id", room_id);  
+  
+    if (userIdError) {  
+      console.error("Error fetching user IDs for room:", userIdError);  
+      throw new Error("Failed to fetch user IDs.");  
+    }  
+  
+    const userIdList = userIds ? userIds.map((item) => item.user_id) : [];  
+  
+    const { data: users, error } = await supabase  
+      .from("users")  
+      .select(`  
+        *,  
+        form:form(wishList, name, text)  
+      `)  
+      .in("id", userIdList);
+  
+    if (error) {  
+      console.error("Error getting users by room:", error);  
+      throw new Error("Failed to get users by room.");  
+    }  
+  
+    return users;  
+  }  
+
   static async getById(id: number) {
     const { data: user, error } = await supabase
       .from("users")
@@ -88,27 +117,53 @@ export default class UserService {
       console.error("Insert Form Error:", formError);
       throw new Error("Failed to insert form entry.");
     }
+
     insertedUser.form = formData;
+
     return insertedUser;
   }
 
   static async updateFormByUserId(userId: number, formData: IForm) {
-    const { data: updatedForm, error } = await supabase
+    const { data: existingForm, error: fetchError } = await supabase
       .from("form")
-      .update({
-        wishList: formData.wishList,
-        name: formData.name,
-        text: formData.text,
-      })
+      .select("*")
       .eq("user_id", userId)
       .single();
 
-    if (error) {
-      console.error("Update Form Error:", error);
-      throw new Error("Failed to update form entry.");
+    if (fetchError && fetchError.code !== "PGRST116") {
+      console.error("Error fetching form:", fetchError);
+      throw new Error("Failed to fetch form entry.");
     }
 
-    return updatedForm;
+    if (existingForm) {
+      const { data: updatedForm, error: updateError } = await supabase
+        .from("form")
+        .update({
+          wishList: formData.wishList,
+          name: formData.name,
+          text: formData.text,
+        })
+        .eq("user_id", userId)
+        .single();
+
+      if (updateError) {
+        console.error("Update Form Error:", updateError);
+        throw new Error("Failed to update form entry.");
+      }
+
+      return updatedForm;
+    } else {
+      const newFormData = { ...formData, user_id: userId };
+      const { error: insertError } = await supabase
+        .from("form")
+        .insert([newFormData]);
+
+      if (insertError) {
+        console.error("Insert Form Error:", insertError);
+        throw new Error("Failed to insert new form entry.");
+      }
+      return newFormData;
+    }
   }
 
   static async logIn(tg_id: number) {
