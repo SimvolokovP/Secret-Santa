@@ -2,6 +2,19 @@
   padding-top: 10px;
   margin-bottom: 20px;
 
+  &__back {
+    background-color: #faf8ed;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    -webkit-box-shadow: 2px 2px 0px 0px rgb(219, 79, 64);
+    -moz-box-shadow: 2px 2px 0px 0px rgb(219, 79, 64);
+    box-shadow: 2px 2px 0px 0px rgb(219, 79, 64);
+  }
+
   &__content {
     display: flex;
     justify-content: space-between;

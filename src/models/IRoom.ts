@@ -4,5 +4,6 @@ export interface IRoom {
   name: string;
   start_time: string;
   is_start: boolean;
+  is_open: boolean
 }
 

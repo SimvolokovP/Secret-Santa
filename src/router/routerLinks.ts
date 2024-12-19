@@ -5,8 +5,8 @@ export const routerLinks = [
     icon: "/tree",
   },
   {
-    to: "/gift",
-    text: "Подарок",
+    to: "/rooms",
+    text: "Комнаты",
     icon: "/gift",
   },
   {

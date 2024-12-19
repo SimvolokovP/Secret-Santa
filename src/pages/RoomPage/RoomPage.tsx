@@ -3,7 +3,6 @@ import { FC, useEffect } from "react";
 import "./GiftPage.scss";
 import GiftToBox from "../../components/GiftToBox/GiftToBox";
 
-import useUser from "../../hooks/useUser";
 import useRooms from "../../hooks/useRooms";
 import { formattedDate } from "../../utils/utils";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
@@ -11,17 +10,15 @@ import RoomDescr from "../../components/RoomDescr/RoomDescr";
 import UsersList from "../../components/UsersList/UsersList";
 import HomeScreenBtn from "../../components/HomeScreenBtn/HomeScreenBtn";
 import ShareBtn from "../../components/ShareBtn/ShareBtn";
+import { useParams } from "react-router-dom";
+import useUserStore from "../../store/useUserStore";
 
 const GiftPage: FC = () => {
-  const {
-    currentUser,
-    secretFriend,
-    getSecretFriend,
-    userStatus,
-    usersList,
-    getUsersListByRoom,
-  } = useUser();
-  const { currentRoom, roomsStatus } = useRooms();
+  const { currentUser } = useUserStore();
+
+  const { currentRoom, roomsStatus, getRoom } = useRooms();
+
+  const { id } = useParams();
 
   const compareTimestamp = (isoString: string) => {
     const inputDate = new Date(isoString);
@@ -35,16 +32,14 @@ const GiftPage: FC = () => {
   };
 
   useEffect(() => {
-    if (currentRoom && currentRoom.id) {
-      getUsersListByRoom(currentRoom?.id);
+    if (id && currentUser?.id) {
+      getRoom(+id);
     }
-  }, [currentRoom]);
-
-
+  }, []);
 
   return (
     <>
-      {userStatus.loading || roomsStatus.loading ? (
+      {roomsStatus.loading ? (
         <LoadingScreen />
       ) : (
         <div className="page gift-page">
@@ -52,16 +47,11 @@ const GiftPage: FC = () => {
             <RoomDescr currentRoom={currentRoom} />
             <div className="gift-page__cover">
               <img src="/treeBig.png" alt="gift" />
-              
+
               {currentRoom?.start_time &&
               !compareTimestamp(currentRoom?.start_time) ? (
                 <>
-                  <GiftToBox
-                    startGame={currentRoom?.start_time}
-                    giftTo={currentUser?.giftTo}
-                    secretFriend={secretFriend}
-                    getSecretFriend={getSecretFriend}
-                  />
+                  <GiftToBox roomId={currentRoom.id} userId={currentUser?.id} />
                 </>
               ) : (
                 <div className="gift-page__time">
@@ -75,7 +65,7 @@ const GiftPage: FC = () => {
               )}
             </div>
             <div className="gift-page__list">
-              <UsersList list={usersList} />
+              <UsersList roomNumber={currentRoom?.id} />
             </div>
             <div className="gift-page__actions">
               <HomeScreenBtn />

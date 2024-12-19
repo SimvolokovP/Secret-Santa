@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { IRoom } from "../models/IRoom";
 import RoomsService from "../api/supabase/roomsApi";
 import { TOperationStatus } from "../models/TOperationStatus";
 
 const useRooms = () => {
   const [currentRoom, setCurrentRoom] = useState<IRoom | null>(null);
+  const [roomsList, setRoomsList] = useState<IRoom[] | []>([]);
   const [roomsStatus, setStatus] = useState<TOperationStatus>({
     loading: false,
     error: null,
   });
 
-  const getRoom = async () => {
+  const getRoom = async (room_id: number) => {
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
       //if user
-      const room = await RoomsService.getById(1);
+      const room = await RoomsService.getById(room_id);
       setCurrentRoom(room);
     } catch (err) {
       const errorMessage =
@@ -25,14 +26,13 @@ const useRooms = () => {
     }
   };
 
-  const getUserInRoom = async (user_id: number) => {
+  const getUserRooms = async (user_id: number) => {
+    console.log(user_id);
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
       //if user
-      if (currentRoom && currentRoom.id) {
-        const room = await RoomsService.getUserInRoom(currentRoom?.id, user_id);
-        return room;
-      }
+      const rooms = await RoomsService.getUserRooms(user_id);
+      setRoomsList(rooms);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred";
@@ -42,15 +42,12 @@ const useRooms = () => {
     }
   };
 
-  useEffect(() => {
-    getRoom();
-  }, []);
-
   return {
     currentRoom,
     roomsStatus,
     getRoom,
-    getUserInRoom
+    getUserRooms,
+    roomsList
   };
 };
 

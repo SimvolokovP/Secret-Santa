@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IUser } from "../models/IUser";
 import { useTg } from "./useTg";
 import UserService from "../api/supabase/userApi";
 import { TOperationStatus } from "../models/TOperationStatus";
 import { IForm } from "../models/IForm";
+import { TelegramWebApps } from "telegram-webapps/src";
 
 const useUser = () => {
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [secretFriend, setSecretFriend] = useState<IUser | null>(null);
-  const [usersList, setUsersList] = useState<IUser[] | []>([]);
   const [userStatus, setStatus] = useState<TOperationStatus>({
     loading: false,
     error: null,
@@ -16,7 +16,8 @@ const useUser = () => {
 
   const { user } = useTg();
 
-  const logIn = async () => {
+  const logIn = async (user: TelegramWebApps.WebAppUser) => {
+    console.log("login");
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
       //if user
@@ -39,22 +40,6 @@ const useUser = () => {
         formData
       );
       setCurrentUser(createdInUser);
-      console.log(createdInUser);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unexpected error occurred";
-      setStatus((prev) => ({ ...prev, error: errorMessage }));
-    } finally {
-      setStatus((prev) => ({ ...prev, loading: false }));
-    }
-  };
-  
-  const updateUserForm = async (formData: IForm) => {
-    try {
-      if (currentUser && currentUser.id) {
-        setStatus((prev) => ({ ...prev, loading: true }));
-        await UserService.updateFormByUserId(currentUser?.id, formData);
-      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred";
@@ -64,12 +49,10 @@ const useUser = () => {
     }
   };
 
-  const getUsersList = async () => {
+  const updateUserForm = async (user_id: number, formData: IForm) => {
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
-      //if user
-      const users = await UserService.getAllUsers();
-      setUsersList(users);
+      await UserService.updateFormByUserId(user_id, formData);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred";
@@ -78,22 +61,7 @@ const useUser = () => {
       setStatus((prev) => ({ ...prev, loading: false }));
     }
   };
-
-  const getUsersListByRoom = async (room_id: number) => {
-    try {
-      setStatus((prev) => ({ ...prev, loading: true }));
-      //if user
-      const users = await UserService.getAllUsersByRoom(room_id);
-      setUsersList(users);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unexpected error occurred";
-      setStatus((prev) => ({ ...prev, error: errorMessage }));
-    } finally {
-      setStatus((prev) => ({ ...prev, loading: false }));
-    }
-  };
-
+ 
   const getSecretFriend = async () => {
     if (currentUser && currentUser.giftTo) {
       try {
@@ -110,22 +78,14 @@ const useUser = () => {
     }
   };
 
-  useEffect(() => {
-    logIn(); //if user
-    // getUsersList();
-  }, [user]);
-
   return {
     currentUser,
     logIn,
     userStatus,
     getSecretFriend,
     secretFriend,
-    usersList,
     createUser,
     updateUserForm,
-    getUsersList,
-    getUsersListByRoom
   };
 };
 

@@ -1,23 +1,34 @@
-import { FC } from "react";
-import { IUser } from "../../models/IUser";
+import { FC, useEffect } from "react";
 
-import './GiftToBox.scss';
+import "./GiftToBox.scss";
+import useUserInRoom from "../../hooks/useUserInRoom";
+import useSecretFriend from "../../hooks/useSecretFriend";
 
 interface GiftToBoxProps {
-  giftTo?: number | null;
-  startGame: string | undefined;
-  secretFriend: IUser | null;
-  getSecretFriend: () => void;
+  userId: number | undefined;
+  roomId: number | undefined;
 }
 
-const GiftToBox: FC<GiftToBoxProps> = ({
-  giftTo,
-  secretFriend,
-  getSecretFriend,
-}) => {
+const GiftToBox: FC<GiftToBoxProps> = ({ userId, roomId }) => {
+  const { userInRoom, getUserInRoom } = useUserInRoom();
+  const { secretFriend, getSecretFriend } = useSecretFriend();
+
+  useEffect(() => {
+    if (userId && roomId) {
+      getUserInRoom(userId, roomId);
+    }
+  }, [useUserInRoom]);
+
+  const handleClick = () => {
+    console.log(userInRoom);
+    if (userInRoom && userInRoom.giftTo) {
+      getSecretFriend(userInRoom.giftTo);
+    }
+  };
+
   return (
     <div className="gift">
-      {giftTo ? (
+      {userInRoom?.giftTo ? (
         <div>
           {secretFriend && secretFriend.form ? (
             <>
@@ -27,7 +38,7 @@ const GiftToBox: FC<GiftToBoxProps> = ({
           ) : (
             <>
               <span>Ты тайный санта для: </span>
-              <button onClick={getSecretFriend}>Узнать</button>
+              <button onClick={handleClick}>Узнать</button>
             </>
           )}
         </div>

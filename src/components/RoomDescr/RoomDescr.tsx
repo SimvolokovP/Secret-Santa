@@ -2,6 +2,7 @@ import { FC } from "react";
 import { IRoom } from "../../models/IRoom";
 
 import './RoomDescr.scss';
+import { Link } from "react-router-dom";
 
 interface RoomDescrProps {
   currentRoom: IRoom | null;
@@ -12,8 +13,10 @@ const RoomDescr: FC<RoomDescrProps> = ({ currentRoom }) => {
     <div className="room-descr">
       {currentRoom ? (
         <div className="room-descr__content">
-          <div>Комната № {currentRoom.id}</div>
-          <div>{currentRoom.name}</div>
+          <Link className="room-descr__back" to={"/rooms"}>
+            <img src="/caret.svg" alt="caret" />
+          </Link>
+          <div>Комната № {currentRoom.id}. "{currentRoom.name}"</div>
         </div>
       ) : (
         <></>

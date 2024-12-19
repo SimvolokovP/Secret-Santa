@@ -5,9 +5,11 @@ import useUser from "../../hooks/useUser";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 
 import "./FormPage.scss";
+import useUserStore from "../../store/useUserStore";
 
 const FormPage: FC = () => {
-  const { createUser, userStatus, currentUser, updateUserForm } = useUser();
+  const { createUser, updateUserForm } = useUser();
+  const { currentUser, userStatus } = useUserStore();
 
   const {
     register,
@@ -31,8 +33,9 @@ const FormPage: FC = () => {
   }, [currentUser, setValue]);
 
   const onSubmit = async (data: IForm) => {
-    if (currentUser) {
-      await updateUserForm(data);
+    if (currentUser && currentUser.id) {
+      console.log(data);
+      await updateUserForm(currentUser.id, data);
     } else {
       await createUser(data);
     }

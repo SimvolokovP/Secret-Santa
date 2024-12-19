@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import MobileBar from "./components/MobileBar/MobileBar";
 import { useTg } from "./hooks/useTg";
 import AppRoutes from "./router/AppRouter";
-import useUser from "./hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "./store/useUserStore";
 
 function App() {
-  const { tg } = useTg();
-  const { currentUser } = useUser();
+  const { tg, user } = useTg();
+  const { currentUser, logIn } = useUserStore();
   const navigate = useNavigate();
 
   const [isUser, setIsUser] = useState<boolean>(false);
@@ -18,6 +18,14 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (user) {
+      logIn(user);
+    } //if user
+    // getUsersList();
+    console.log(currentUser);
+  }, [user]);
+
+  useEffect(() => {
     if (!currentUser || !currentUser.form?.length) {
       setIsUser(false);
       navigate("/form");
@@ -25,7 +33,7 @@ function App() {
       setIsUser(true);
       navigate("/");
     }
-    console.log(currentUser);
+    
   }, [currentUser]);
 
   return (
