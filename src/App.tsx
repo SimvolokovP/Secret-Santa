@@ -33,7 +33,6 @@ function App() {
       setIsUser(true);
       navigate("/");
     }
-    
   }, [currentUser]);
 
   return (

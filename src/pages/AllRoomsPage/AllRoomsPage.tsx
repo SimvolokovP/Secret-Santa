@@ -3,6 +3,8 @@ import useRooms from "../../hooks/useRooms";
 import RoomsList from "../../components/RoomsList/RoomsList";
 import useUserStore from "../../store/useUserStore";
 
+import './AllRoomsPage.scss';
+
 const AllRoomsPage: FC = () => {
   const { currentUser } = useUserStore();
   const { roomsList, getUserRooms } = useRooms();
@@ -19,7 +21,7 @@ const AllRoomsPage: FC = () => {
   return (
     <div className="page rooms-page">
       <div className="container">
-        <h3>Доступные комнаты</h3>
+        <h3 className="rooms-page__title">Доступные комнаты</h3>
         <RoomsList roomsList={roomsList} />
       </div>
     </div>

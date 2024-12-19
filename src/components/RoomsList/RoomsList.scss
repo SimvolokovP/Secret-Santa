@@ -1,0 +1,24 @@
+.rooms-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rooms-item {
+  background-color: #faf8ed;
+  width: 100%;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  position: relative;
+
+  & a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+}

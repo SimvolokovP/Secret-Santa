@@ -1,0 +1,17 @@
+.rooms-page {
+  background-color: #f3e3ca;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 40px;
+
+  &__title {
+    margin: 0;
+    color: #543930;
+    font-weight: 800;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+}

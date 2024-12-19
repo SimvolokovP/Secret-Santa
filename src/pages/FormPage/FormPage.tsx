@@ -8,8 +8,8 @@ import "./FormPage.scss";
 import useUserStore from "../../store/useUserStore";
 
 const FormPage: FC = () => {
-  const { createUser, updateUserForm } = useUser();
-  const { currentUser, userStatus } = useUserStore();
+  const { createUser, updateUserForm, userStatus } = useUser();
+  const { currentUser } = useUserStore();
 
   const {
     register,
