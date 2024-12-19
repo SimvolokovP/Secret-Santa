@@ -36,34 +36,37 @@ export default class UserService {
     return users;
   }
 
-  static async getAllUsersByRoom(room_id: number) {  
-    const { data: userIds, error: userIdError } = await supabase  
-      .from("users_rooms")  
-      .select("user_id")  
-      .eq("room_id", room_id);  
-  
-    if (userIdError) {  
-      console.error("Error fetching user IDs for room:", userIdError);  
-      throw new Error("Failed to fetch user IDs.");  
-    }  
-  
-    const userIdList = userIds ? userIds.map((item) => item.user_id) : [];  
-  
-    const { data: users, error } = await supabase  
-      .from("users")  
-      .select(`  
+  static async getAllUsersByRoom(room_id: number) {
+    const { data: userIds, error: userIdError } = await supabase
+      .from("users_rooms")
+      .select("user_id")
+      .eq("room_id", room_id);
+
+    if (userIdError) {
+      console.error("Error fetching user IDs for room:", userIdError);
+      throw new Error("Failed to fetch user IDs.");
+    }
+
+    const userIdList = userIds ? userIds.map((item) => item.user_id) : [];
+
+    const { data: users, error } = await supabase
+      .from("users")
+      .select(
+        `  
         *,  
-        form:form(wishList, name, text)  
-      `)  
+        form:form(wishList, name, text),
+        roomDescr:users_rooms_user_id_fkey(giftTo, user_id, giftTo, room_id, role)
+      `
+      )
       .in("id", userIdList);
-  
-    if (error) {  
-      console.error("Error getting users by room:", error);  
-      throw new Error("Failed to get users by room.");  
-    }  
-  
-    return users;  
-  }  
+
+    if (error) {
+      console.error("Error getting users by room:", error);
+      throw new Error("Failed to get users by room.");
+    }
+
+    return users;
+  }
 
   static async getById(id: number) {
     const { data: user, error } = await supabase

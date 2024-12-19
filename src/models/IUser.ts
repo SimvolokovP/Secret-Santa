@@ -1,4 +1,5 @@
 import { IForm } from "./IForm";
+import { IUserInRoom } from "./IUserInRoom";
 
 export interface IUser {
   id?: number;
@@ -6,4 +7,5 @@ export interface IUser {
   created_at?: string;
   giftTo: number | null;
   form?: IForm[] | null;
+  roomDescr?: IUserInRoom[] | null
 }

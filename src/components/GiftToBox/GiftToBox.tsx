@@ -29,7 +29,7 @@ const GiftToBox: FC<GiftToBoxProps> = ({ userId, roomId }) => {
   return (
     <div className="gift">
       {userInRoom?.giftTo ? (
-        <div>
+        <div className="gift__content">
           {secretFriend && secretFriend.form ? (
             <>
               <span>Ты тайный санта для: </span>

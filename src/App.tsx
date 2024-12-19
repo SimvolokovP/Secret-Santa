@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     if (user) {
       logIn(user);
-    } //if user
+    }
     // getUsersList();
     console.log(currentUser);
   }, [user]);
