@@ -52,6 +52,7 @@ const FormPage: FC = () => {
           <label className="user-form__label">
             <span>Имя: </span>
             <input
+              maxLength={22}
               {...register("name", { required: true })}
               placeholder="Вадим Попов"
             />

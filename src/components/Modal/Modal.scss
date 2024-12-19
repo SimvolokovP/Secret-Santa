@@ -1,0 +1,59 @@
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #f3e3ca;
+  display: flex;
+  z-index: 120;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+
+  &.active {
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: all;
+  }
+
+  &__content {
+    min-height: 90px;
+    width: 300px;
+    border-radius: 16px;
+    padding: 16px;
+    background-color: #697947;
+    transition: transform 0.2s ease-in-out;
+    transform: scale(0);
+    position: relative;
+
+    &.active {
+      transition: transform 0.2s ease-in-out;
+      transform: scale(1);  
+
+      & div {
+        max-height: 350px;
+        overflow-y: auto;
+      }
+
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      background-image: url("/hat.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 81px;
+      height: 64px;
+      top: -39px;
+      right: -32px;
+      transform: rotate(19deg);
+    }
+  }
+}

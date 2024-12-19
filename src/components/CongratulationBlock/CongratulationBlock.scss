@@ -1,0 +1,17 @@
+.congratulation {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  &__body {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 120%;
+  }
+}
