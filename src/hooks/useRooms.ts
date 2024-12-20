@@ -55,6 +55,19 @@ const useRooms = () => {
     }
   };
 
+  const joinToRoomByCode = async (room_code: string, user_id: number) => {
+    try {
+      setStatus((prev) => ({ ...prev, loading: true }));
+      return await RoomsService.joinRoomByCode(room_code, user_id);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setStatus((prev) => ({ ...prev, error: errorMessage }));
+    } finally {
+      setStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
   return {
     currentRoom,
     roomsStatus,
@@ -62,6 +75,7 @@ const useRooms = () => {
     getUserRooms,
     roomsList,
     startRoom,
+    joinToRoomByCode,
   };
 };
 

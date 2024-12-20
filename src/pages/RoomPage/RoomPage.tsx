@@ -10,7 +10,7 @@ import RoomDescr from "../../components/RoomDescr/RoomDescr";
 import UsersList from "../../components/UsersList/UsersList";
 import HomeScreenBtn from "../../components/HomeScreenBtn/HomeScreenBtn";
 import ShareBtn from "../../components/ShareBtn/ShareBtn";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import useUserInRoom from "../../hooks/useUserInRoom";
 
@@ -23,6 +23,8 @@ const GiftPage: FC = () => {
 
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   const compareTimestamp = (isoString: string) => {
     const inputDate = new Date(isoString);
     const currentDate = new Date();
@@ -34,9 +36,10 @@ const GiftPage: FC = () => {
     }
   };
 
-  const handleAdminBtn = () => {
+  const handleAdminBtn = async () => {
     if (currentRoom && currentRoom.id) {
-      startRoom(currentRoom?.id);
+      await startRoom(currentRoom?.id);
+      navigate(`/rooms/${id}`);
     }
   };
 
@@ -87,7 +90,12 @@ const GiftPage: FC = () => {
 
               {!currentRoom?.is_start &&
               userInRoom?.role?.toUpperCase() === "ADMIN" ? (
-                <button className="btn btn-reset gift-page__admin" onClick={handleAdminBtn}>Запуск команты</button>
+                <button
+                  className="btn btn-reset gift-page__admin"
+                  onClick={handleAdminBtn}
+                >
+                  Запуск команты
+                </button>
               ) : (
                 <></>
               )}

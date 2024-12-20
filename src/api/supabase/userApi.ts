@@ -87,10 +87,9 @@ export default class UserService {
     return user;
   }
 
-  static async insertNewUser(tg_id: number, formData: IForm) {
+  static async insertNewUser(user: IUser) {
     const newUser: IUser = {
-      tg_id: tg_id,
-      giftTo: null,
+      tg_id: user.tg_id,
       created_at: new Date().toISOString(),
     };
 
@@ -112,16 +111,14 @@ export default class UserService {
     //   wishList: "",
     // };
 
-    formData.user_id = insertedUser.id;
+    // const { error: formError } = await supabase.from("form").insert([formData]);
 
-    const { error: formError } = await supabase.from("form").insert([formData]);
+    // if (formError) {
+    //   console.error("Insert Form Error:", formError);
+    //   throw new Error("Failed to insert form entry.");
+    // }
 
-    if (formError) {
-      console.error("Insert Form Error:", formError);
-      throw new Error("Failed to insert form entry.");
-    }
-
-    insertedUser.form = formData;
+    // insertedUser.form = formData;
 
     return insertedUser;
   }
@@ -171,16 +168,15 @@ export default class UserService {
 
   static async logIn(tg_id: number) {
     try {
-      const user = await this.getByTgId(tg_id);
+      let user = await this.getByTgId(tg_id);
 
-      // if (!user) {
-      //   const newUser: IUser = {
-      //     tg_id: tg_id,
-      //     giftTo: null,
-      //     created_at: new Date().toISOString(),
-      //   };
-      //   user = await this.insertNewUser(newUser);
-      // }
+      if (!user) {
+        const newUser: IUser = {
+          tg_id: tg_id,
+          created_at: new Date().toISOString(),
+        };
+        user = await this.insertNewUser(newUser);
+      }
       console.log(user);
       return user;
     } catch (error) {

@@ -5,5 +5,5 @@ export interface IRoom {
   start_time: string;
   is_start: boolean;
   is_open: boolean;
-  isParticipant?: boolean;
+  code?: string;
 }

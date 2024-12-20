@@ -14,16 +14,8 @@ const RoomsList: FC<RoomsListProps> = ({ roomsList }) => {
     <ul className="list-reset rooms-list">
       {roomsList.length ? (
         roomsList.map((room) => (
-          <li
-            style={{ backgroundColor: room.isParticipant ? "green" : "red" }}
-            className="rooms-item"
-            key={room.id}
-          >
-            {room.isParticipant ? (
-              <Link to={`/rooms/${room.id}`}></Link>
-            ) : (
-              <></>
-            )}
+          <li className="rooms-item" key={room.id}>
+            <Link to={`/rooms/${room.id}`}></Link>
             {room.name}
           </li>
         ))

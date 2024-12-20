@@ -1,6 +1,37 @@
+import { IUserInRoom } from "../../models/IUserInRoom";
 import supabase from "../../database/supabase/supabase";
 
 export default class RoomsService {
+  static async joinRoomByCode(code: string, user_id: number): Promise<void> {
+    const { data: room, error: roomError } = await supabase
+      .from("rooms")
+      .select("*")
+      .eq("code", code)
+      .eq("is_start", false)
+      .single();
+
+    if (roomError) {
+      console.error("Ошибка при получении комнаты:", roomError);
+      throw new Error("Не удалось найти комнату с данным кодом.");
+    }
+
+    if (!room) {
+      throw new Error("Комната с данным кодом не найдена или уже запущена.");
+    }
+
+    const { error: insertError } = await supabase
+      .from("users_rooms")
+      .insert({ room_id: room.id, user_id } as IUserInRoom);
+
+    if (insertError) {
+      console.error(
+        "Ошибка при добавлении пользователя в комнату:",
+        insertError
+      );
+      throw new Error("Не удалось присоединить пользователя к комнате.");
+    }
+  }
+
   static async startRoom(room_id: number): Promise<void> {
     const { error } = await supabase
       .from("rooms")
@@ -57,7 +88,7 @@ export default class RoomsService {
 
     const { error: updateError } = await supabase
       .from("users_rooms")
-      .upsert(updates, { onConflict: "user_id, room_id" }); 
+      .upsert(updates, { onConflict: "user_id, room_id" });
 
     if (updateError) {
       console.error("Ошибка при обновлении user_rooms:", updateError);
@@ -93,7 +124,8 @@ export default class RoomsService {
   static async getUserRooms(user_id: number) {
     const { data: openRooms, error: openRoomsError } = await supabase
       .from("rooms")
-      .select("*");
+      .select("*")
+      .eq("is_open", true);
 
     if (openRoomsError) {
       console.error("Error getting open rooms:", openRoomsError);
@@ -110,15 +142,26 @@ export default class RoomsService {
       throw new Error("Failed to get user rooms.");
     }
 
-    const userRoomIds = new Set(userRooms.map((userRoom) => userRoom.room_id));
+    const userRoomIds = userRooms.map((userRoom) => userRoom.room_id);
 
-    const roomsWithParticipation = openRooms.map((room) => ({
-      ...room,
-      isParticipant: userRoomIds.has(room.id),
-    }));
+    const combinedRoomIds = [
+      ...openRooms.map((room) => room.id),
+      ...userRoomIds,
+    ];
 
-    console.log(roomsWithParticipation);
-    return roomsWithParticipation;
+    const uniqueRoomIds = Array.from(new Set(combinedRoomIds));
+
+    const { data: uniqueRooms, error: uniqueRoomsError } = await supabase
+      .from("rooms")
+      .select("*")
+      .in("id", uniqueRoomIds);
+
+    if (uniqueRoomsError) {
+      console.error("Error getting unique rooms:", uniqueRoomsError);
+      throw new Error("Failed to get unique rooms.");
+    }
+
+    return uniqueRooms;
   }
 
   static async getUserInRoom(room_id: number, user_id: number) {
