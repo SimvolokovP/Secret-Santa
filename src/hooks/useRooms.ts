@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { IRoom } from "../models/IRoom";
 import RoomsService from "../api/supabase/roomsApi";
 import { TOperationStatus } from "../models/TOperationStatus";
@@ -42,12 +42,26 @@ const useRooms = () => {
     }
   };
 
+  const startRoom = async (room_id: number) => {
+    try {
+      setStatus((prev) => ({ ...prev, loading: true }));
+      return await RoomsService.startRoom(room_id);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setStatus((prev) => ({ ...prev, error: errorMessage }));
+    } finally {
+      setStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
   return {
     currentRoom,
     roomsStatus,
     getRoom,
     getUserRooms,
-    roomsList
+    roomsList,
+    startRoom,
   };
 };
 

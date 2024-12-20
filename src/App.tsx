@@ -4,6 +4,7 @@ import { useTg } from "./hooks/useTg";
 import AppRoutes from "./router/AppRouter";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "./store/useUserStore";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
 function App() {
   const { tg, user } = useTg();
@@ -38,7 +39,7 @@ function App() {
   return (
     <>
       <main>
-        <AppRoutes />
+        {isUser ? <AppRoutes /> : <LoadingScreen />}
         {isUser ? <MobileBar /> : <></>}
       </main>
     </>

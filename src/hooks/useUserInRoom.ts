@@ -5,7 +5,7 @@ import { IUserInRoom } from "../models/IUserInRoom";
 
 const useUserInRoom = () => {
   const [userInRoom, setUserInRoom] = useState<IUserInRoom | null>(null);
-  const [roomsStatus, setStatus] = useState<TOperationStatus>({
+  const [userInRoomStatus, setStatus] = useState<TOperationStatus>({
     loading: false,
     error: null,
   });
@@ -27,7 +27,7 @@ const useUserInRoom = () => {
   };
 
   return {
-    roomsStatus,
+    userInRoomStatus,
     getUserInRoom,
     userInRoom,
   };

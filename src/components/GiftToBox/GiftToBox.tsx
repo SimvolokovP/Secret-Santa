@@ -1,27 +1,23 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 import "./GiftToBox.scss";
-import useUserInRoom from "../../hooks/useUserInRoom";
 import useSecretFriend from "../../hooks/useSecretFriend";
 import Modal from "../Modal/Modal";
 import FriendWishList from "../FriendWishList/FriendWishList";
 import { ClipLoader } from "react-spinners";
+import { TOperationStatus } from "../../models/TOperationStatus";
+import { IUserInRoom } from "../../models/IUserInRoom";
 
 interface GiftToBoxProps {
   userId: number | undefined;
   roomId: number | undefined;
+  userInRoomStatus: TOperationStatus;
+  userInRoom: IUserInRoom | null;
 }
 
-const GiftToBox: FC<GiftToBoxProps> = ({ userId, roomId }) => {
-  const { userInRoom, getUserInRoom, roomsStatus } = useUserInRoom();
+const GiftToBox: FC<GiftToBoxProps> = ({ userInRoomStatus, userInRoom }) => {
   const { secretFriend, getSecretFriend } = useSecretFriend();
   const [isModal, setIsModal] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (userId && roomId) {
-      getUserInRoom(userId, roomId);
-    }
-  }, [useUserInRoom]);
 
   const handleClick = () => {
     console.log(userInRoom);
@@ -32,7 +28,7 @@ const GiftToBox: FC<GiftToBoxProps> = ({ userId, roomId }) => {
 
   return (
     <div className="gift">
-      {!roomsStatus.loading ? (
+      {!userInRoomStatus.loading ? (
         userInRoom?.giftTo ? (
           <div className="gift__content">
             {secretFriend && secretFriend.form ? (

@@ -12,11 +12,14 @@ import HomeScreenBtn from "../../components/HomeScreenBtn/HomeScreenBtn";
 import ShareBtn from "../../components/ShareBtn/ShareBtn";
 import { useParams } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
+import useUserInRoom from "../../hooks/useUserInRoom";
 
 const GiftPage: FC = () => {
   const { currentUser } = useUserStore();
 
-  const { currentRoom, roomsStatus, getRoom } = useRooms();
+  const { currentRoom, roomsStatus, getRoom, startRoom } = useRooms();
+
+  const { userInRoom, getUserInRoom, userInRoomStatus } = useUserInRoom();
 
   const { id } = useParams();
 
@@ -30,6 +33,18 @@ const GiftPage: FC = () => {
       return true;
     }
   };
+
+  const handleAdminBtn = () => {
+    if (currentRoom && currentRoom.id) {
+      startRoom(currentRoom?.id);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser?.id && currentRoom?.id) {
+      getUserInRoom(currentUser.id, currentRoom.id);
+    }
+  }, [currentRoom, currentUser]);
 
   useEffect(() => {
     if (id && currentUser?.id) {
@@ -49,19 +64,32 @@ const GiftPage: FC = () => {
               <img src="/treeBig.png" alt="gift" />
 
               {currentRoom?.start_time &&
-              !compareTimestamp(currentRoom?.start_time) ? (
+              !compareTimestamp(currentRoom?.start_time) &&
+              currentRoom.is_start ? (
                 <>
-                  <GiftToBox roomId={currentRoom.id} userId={currentUser?.id} />
+                  <GiftToBox
+                    userInRoom={userInRoom}
+                    userInRoomStatus={userInRoomStatus}
+                    roomId={currentRoom.id}
+                    userId={currentUser?.id}
+                  />
                 </>
               ) : (
                 <div className="gift-page__time">
-                  Играx еще не началась. Ожидайте{" "}
+                  Игра еще не началась. Ожидайте{" "}
                   {currentRoom?.start_time ? (
                     formattedDate(currentRoom?.start_time)
                   ) : (
                     <span>Time error</span>
                   )}
                 </div>
+              )}
+
+              {!currentRoom?.is_start &&
+              userInRoom?.role?.toUpperCase() === "ADMIN" ? (
+                <button className="btn btn-reset gift-page__admin" onClick={handleAdminBtn}>Запуск команты</button>
+              ) : (
+                <></>
               )}
             </div>
             <div className="gift-page__list">
