@@ -7,7 +7,7 @@ import "./RoomsList.scss";
 
 interface RoomsListProps {
   roomsList: IRoom[] | [];
-  isLoading: boolean
+  isLoading: boolean;
 }
 
 const RoomsList: FC<RoomsListProps> = ({ roomsList, isLoading }) => {
@@ -23,6 +23,7 @@ const RoomsList: FC<RoomsListProps> = ({ roomsList, isLoading }) => {
       ) : (
         <ClipLoader color="#543930" />
       )}
+      { !isLoading && roomsList.length === 0 ? <div>-Вы не состоите в комнате-</div> : <></> }
     </ul>
   );
 };

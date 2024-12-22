@@ -16,7 +16,7 @@ const RoomDescr: FC<RoomDescrProps> = ({ currentRoom }) => {
           <Link className="room-descr__back" to={"/rooms"}>
             <img src="/caret.svg" alt="caret" />
           </Link>
-          <div>Комната № {currentRoom.id}. "{currentRoom.name}"</div>
+          <div>Комната № {currentRoom.code}. "{currentRoom.name}"</div>
         </div>
       ) : (
         <></>

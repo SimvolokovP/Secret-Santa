@@ -42,6 +42,20 @@ const useRooms = () => {
     }
   };
 
+  const createNewRoom = async (newRoom: IRoom, user_id: number) => {
+    try {
+      setStatus((prev) => ({ ...prev, loading: true }));
+      const room = await RoomsService.createNewRoom(newRoom, user_id);
+      return room;
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setStatus((prev) => ({ ...prev, error: errorMessage }));
+    } finally {
+      setStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
   const startRoom = async (room_id: number) => {
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
@@ -89,7 +103,8 @@ const useRooms = () => {
     roomsList,
     startRoom,
     joinToRoom,
-    getRoomByCode
+    getRoomByCode,
+    createNewRoom,
   };
 };
 

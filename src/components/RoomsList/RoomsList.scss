@@ -4,6 +4,9 @@
   justify-content: center;
   flex-direction: column;
   gap: 12px;
+  overflow-y: auto;
+  width: 100%;
+  margin-bottom: 16px;
 }
 
 .rooms-item {
@@ -13,6 +16,9 @@
   padding: 8px;
   border-radius: 8px;
   position: relative;
+  color: #543930;
+  font-size: 18px;
+  font-weight: 700;
 
   & a {
     position: absolute;

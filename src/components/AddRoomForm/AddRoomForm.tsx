@@ -25,7 +25,7 @@ const AddRoomForm: FC = () => {
   const onSubmit = async (data: FormData) => {
     if (currentUser && currentUser.id) {
       setTargetRoom(null);
-      const room = await getRoomByCode(data.code);
+      const room = await getRoomByCode(data.code.toUpperCase());
       console.log(room);
       if (room) {
         setTargetRoom(room);

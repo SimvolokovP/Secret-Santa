@@ -1,5 +1,6 @@
 import { IUserInRoom } from "../../models/IUserInRoom";
 import supabase from "../../database/supabase/supabase";
+import { IRoom } from "../../models/IRoom";
 
 export default class RoomsService {
   static async getRoomByCode(code: string) {
@@ -26,6 +27,20 @@ export default class RoomsService {
     const { error: insertError } = await supabase
       .from("users_rooms")
       .insert({ room_id: room_id, user_id } as IUserInRoom);
+
+    if (insertError) {
+      console.error(
+        "Ошибка при добавлении пользователя в комнату:",
+        insertError
+      );
+      throw new Error("Не удалось присоединить пользователя к комнате.");
+    }
+  }
+
+  static async addAdminUserInRoom(room_id: number, user_id: number) {
+    const { error: insertError } = await supabase
+      .from("users_rooms")
+      .insert({ room_id: room_id, user_id, role: "ADMIN" } as IUserInRoom);
 
     if (insertError) {
       console.error(
@@ -121,6 +136,45 @@ export default class RoomsService {
     }
 
     return room;
+  }
+
+  static async createNewRoom(room: IRoom, user_id: number) {
+    const code = await this.generateUniqueCode();
+
+    const roomWithCode = {
+      ...room,
+      code: code,
+    };
+
+    const { data: insertedRoom, error: roomError } = await supabase
+      .from("rooms")
+      .insert([roomWithCode])
+      .select("*")
+      .single();
+
+    if (roomError) {
+      console.error("Insert User Error:", roomError);
+      throw new Error("Failed to insert user.");
+    }
+
+    await this.addAdminUserInRoom(insertedRoom.id, user_id);
+
+    return insertedRoom;
+  }
+
+  static async generateUniqueCode() {
+    let uniqueCode = "";
+
+    const randomLetter = String.fromCharCode(
+      65 + Math.floor(Math.random() * 26)
+    );
+    const randomDigits = Math.floor(1000 + Math.random() * 9000)
+      .toString()
+      .slice(1, 4);
+
+    uniqueCode = randomLetter + randomDigits;
+
+    return uniqueCode;
   }
 
   static async getUserRooms(user_id: number) {

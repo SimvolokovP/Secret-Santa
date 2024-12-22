@@ -45,12 +45,12 @@ const UsersList: FC<UsersListProps> = ({ roomNumber }) => {
                     <div className="users-item__body">
                       <div className="users-item__name">
                         {index + 1}. {user?.form[0]?.name}
-                        {user.roomDescr &&
+                        {/* {user.roomDescr &&
                         user.roomDescr[0].role === "ADMIN" ? (
                           <span> 👑 </span>
                         ) : (
                           <></>
-                        )}
+                        )} */}
                         {user.id === currentUser?.id ? (
                           <span className="users-item__me"> - это ты :)</span>
                         ) : (

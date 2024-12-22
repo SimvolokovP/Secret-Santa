@@ -5,6 +5,7 @@ import useUserStore from "../../store/useUserStore";
 
 import "./AllRoomsPage.scss";
 import AddRoomForm from "../../components/AddRoomForm/AddRoomForm";
+import { Link } from "react-router-dom";
 
 const AllRoomsPage: FC = () => {
   const { currentUser } = useUserStore();
@@ -21,10 +22,18 @@ const AllRoomsPage: FC = () => {
 
   return (
     <div className="page rooms-page">
-      <div className="container">
+      <div className="container rooms-page__container">
         <h3 className="rooms-page__title">Доступные комнаты</h3>
         <AddRoomForm />
-        <RoomsList isLoading={roomsStatus.loading} roomsList={roomsList} />
+        <div className="rooms-page__content">
+          <RoomsList isLoading={roomsStatus.loading} roomsList={roomsList} />
+          <Link
+            className="rooms-page__creator btn btn-reset"
+            to={"/room-creator"}
+          >
+            Создать комнату
+          </Link>
+        </div>
       </div>
     </div>
   );
