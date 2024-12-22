@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&family=Roboto:wght@300;400;500;700;900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&family=Roboto:wght@300;400;500;700;900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
 html {
   box-sizing: border-box;
@@ -71,10 +71,16 @@ body {
 }
 
 .btn {
-  background-color: #DB4F40;
-  color: #FAF8ED;
+  background-color: #db4f40;
+  color: #faf8ed;
   border-radius: 12px;
   padding: 8px 32px;
   font-size: 14px;
   font-weight: 600;
+}
+
+input {
+  border-radius: 8px;
+  padding: 8px 24px 8px 6px;
+  border: none;
 }

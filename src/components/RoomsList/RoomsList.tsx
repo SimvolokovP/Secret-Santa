@@ -7,12 +7,13 @@ import "./RoomsList.scss";
 
 interface RoomsListProps {
   roomsList: IRoom[] | [];
+  isLoading: boolean
 }
 
-const RoomsList: FC<RoomsListProps> = ({ roomsList }) => {
+const RoomsList: FC<RoomsListProps> = ({ roomsList, isLoading }) => {
   return (
     <ul className="list-reset rooms-list">
-      {roomsList.length ? (
+      {!isLoading ? (
         roomsList.map((room) => (
           <li className="rooms-item" key={room.id}>
             <Link to={`/rooms/${room.id}`}></Link>

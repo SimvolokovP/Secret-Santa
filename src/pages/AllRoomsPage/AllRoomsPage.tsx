@@ -8,7 +8,7 @@ import AddRoomForm from "../../components/AddRoomForm/AddRoomForm";
 
 const AllRoomsPage: FC = () => {
   const { currentUser } = useUserStore();
-  const { roomsList, getUserRooms } = useRooms();
+  const { roomsList, getUserRooms, roomsStatus } = useRooms();
 
   useEffect(() => {
     console.log(currentUser);
@@ -24,7 +24,7 @@ const AllRoomsPage: FC = () => {
       <div className="container">
         <h3 className="rooms-page__title">Доступные комнаты</h3>
         <AddRoomForm />
-        <RoomsList roomsList={roomsList} />
+        <RoomsList isLoading={roomsStatus.loading} roomsList={roomsList} />
       </div>
     </div>
   );

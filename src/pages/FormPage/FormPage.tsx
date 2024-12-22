@@ -8,7 +8,7 @@ import "./FormPage.scss";
 import useUserStore from "../../store/useUserStore";
 
 const FormPage: FC = () => {
-  const { createUser, updateUserForm, userStatus } = useUser();
+  const { updateUserForm, userStatus } = useUser();
   const { currentUser } = useUserStore();
 
   const {
@@ -36,8 +36,6 @@ const FormPage: FC = () => {
     if (currentUser && currentUser.id) {
       console.log(data);
       await updateUserForm(currentUser.id, data);
-    } else {
-      await createUser(data);
     }
     window.location.reload();
   };

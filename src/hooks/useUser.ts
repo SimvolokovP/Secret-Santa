@@ -14,14 +14,13 @@ const useUser = () => {
 
   const { user } = useTg();
 
-  const createUser = async (formData: IForm) => {
+  const createUser = async () => {
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
-      const createdInUser = await UserService.insertNewUser(
-        user?.id || 123,
-        formData
-      );
-      setCurrentUser(createdInUser);
+      if (user) {
+        const createdInUser = await UserService.insertNewUser(user.id);
+        setCurrentUser(createdInUser);
+      }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred";

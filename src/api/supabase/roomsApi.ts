@@ -2,7 +2,7 @@ import { IUserInRoom } from "../../models/IUserInRoom";
 import supabase from "../../database/supabase/supabase";
 
 export default class RoomsService {
-  static async joinRoomByCode(code: string, user_id: number): Promise<void> {
+  static async getRoomByCode(code: string) {
     const { data: room, error: roomError } = await supabase
       .from("rooms")
       .select("*")
@@ -19,9 +19,13 @@ export default class RoomsService {
       throw new Error("Комната с данным кодом не найдена или уже запущена.");
     }
 
+    return room;
+  }
+
+  static async joinRoom(room_id: number, user_id: number) {
     const { error: insertError } = await supabase
       .from("users_rooms")
-      .insert({ room_id: room.id, user_id } as IUserInRoom);
+      .insert({ room_id: room_id, user_id } as IUserInRoom);
 
     if (insertError) {
       console.error(
@@ -32,7 +36,7 @@ export default class RoomsService {
     }
   }
 
-  static async startRoom(room_id: number): Promise<void> {
+  static async startRoom(room_id: number) {
     const { error } = await supabase
       .from("rooms")
       .update({ is_start: true })
@@ -46,9 +50,7 @@ export default class RoomsService {
     await this.shuffleGiftGiving(room_id);
   }
 
-  static async shuffleGiftGiving(
-    room_id: number
-  ): Promise<Record<number, number>> {
+  static async shuffleGiftGiving(room_id: number) {
     const { data: userRooms, error: userRoomsError } = await supabase
       .from("users_rooms")
       .select("user_id")

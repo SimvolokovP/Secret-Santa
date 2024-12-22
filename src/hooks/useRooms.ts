@@ -55,10 +55,23 @@ const useRooms = () => {
     }
   };
 
-  const joinToRoomByCode = async (room_code: string, user_id: number) => {
+  const joinToRoom = async (room_id: number, user_id: number) => {
     try {
       setStatus((prev) => ({ ...prev, loading: true }));
-      return await RoomsService.joinRoomByCode(room_code, user_id);
+      return await RoomsService.joinRoom(room_id, user_id);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setStatus((prev) => ({ ...prev, error: errorMessage }));
+    } finally {
+      setStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
+  const getRoomByCode = async (room_code: string) => {
+    try {
+      setStatus((prev) => ({ ...prev, loading: true }));
+      return await RoomsService.getRoomByCode(room_code);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unexpected error occurred";
@@ -75,7 +88,8 @@ const useRooms = () => {
     getUserRooms,
     roomsList,
     startRoom,
-    joinToRoomByCode,
+    joinToRoom,
+    getRoomByCode
   };
 };
 

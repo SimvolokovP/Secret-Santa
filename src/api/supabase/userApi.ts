@@ -87,9 +87,9 @@ export default class UserService {
     return user;
   }
 
-  static async insertNewUser(user: IUser) {
+  static async insertNewUser(tg_id: number) {
     const newUser: IUser = {
-      tg_id: user.tg_id,
+      tg_id: tg_id,
       created_at: new Date().toISOString(),
     };
 
@@ -175,7 +175,7 @@ export default class UserService {
           tg_id: tg_id,
           created_at: new Date().toISOString(),
         };
-        user = await this.insertNewUser(newUser);
+        user = await this.insertNewUser(newUser.tg_id);
       }
       console.log(user);
       return user;
