@@ -6,10 +6,17 @@ import useUserStore from "../../store/useUserStore";
 import "./AllRoomsPage.scss";
 import AddRoomForm from "../../components/AddRoomForm/AddRoomForm";
 import { Link } from "react-router-dom";
+import { useTg } from "../../hooks/useTg";
 
 const AllRoomsPage: FC = () => {
   const { currentUser } = useUserStore();
   const { roomsList, getUserRooms, roomsStatus } = useRooms();
+
+  const { backBtn } = useTg();
+
+  useEffect(() => {
+    backBtn.hide();
+  }, []);
 
   useEffect(() => {
     console.log(currentUser);

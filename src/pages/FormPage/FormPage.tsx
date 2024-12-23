@@ -25,9 +25,9 @@ const FormPage: FC = () => {
   useEffect(() => {
     if (currentUser && currentUser.form && currentUser.form.length > 0) {
       const { name, text, wishList } = currentUser.form[0];
-      setValue("name", name);
-      setValue("text", text);
-      setValue("wishList", wishList);
+      setValue("name", name?.trim());
+      setValue("text", text?.trim());
+      setValue("wishList", wishList?.trim());
       setIsEditing(true);
     }
   }, [currentUser, setValue]);

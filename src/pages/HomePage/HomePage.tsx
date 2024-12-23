@@ -1,11 +1,18 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import "./HomePage.scss";
 import Snowfall from "react-snowfall";
 import Greeting from "../../components/Greeting/Greeting";
 import CountdownTimer from "../../components/CountdownTimer/CountdownTimer";
 import { newYearDate } from "../../utils/utils";
+import { useTg } from "../../hooks/useTg";
 
 const HomePage: FC = () => {
+  const { backBtn } = useTg();
+
+  useEffect(() => {
+    backBtn.hide();
+  }, []);
+
   return (
     <div className="page home-page">
       <div className="container home-page__container">

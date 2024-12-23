@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import "./RoomCreator.scss";
 import { IRoom } from "../../models/IRoom";
 import useRooms from "../../hooks/useRooms";
 import useUserStore from "../../store/useUserStore";
+import { useTg } from "../../hooks/useTg";
 
 const RoomCreator: FC = () => {
   const { register, handleSubmit } = useForm<IRoom>();
@@ -12,6 +13,12 @@ const RoomCreator: FC = () => {
   const { createNewRoom } = useRooms();
 
   const { currentUser } = useUserStore();
+
+  const { backBtn } = useTg();
+
+  useEffect(() => {
+    backBtn.show();
+  }, []);
 
   const onSubmit = async (room: IRoom) => {
     if (room && currentUser?.id) {

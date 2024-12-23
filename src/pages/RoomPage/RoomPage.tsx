@@ -10,9 +10,10 @@ import RoomDescr from "../../components/RoomDescr/RoomDescr";
 import UsersList from "../../components/UsersList/UsersList";
 import HomeScreenBtn from "../../components/HomeScreenBtn/HomeScreenBtn";
 import ShareBtn from "../../components/ShareBtn/ShareBtn";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import useUserInRoom from "../../hooks/useUserInRoom";
+import { useTg } from "../../hooks/useTg";
 
 const GiftPage: FC = () => {
   const { currentUser } = useUserStore();
@@ -23,7 +24,11 @@ const GiftPage: FC = () => {
 
   const { id } = useParams();
 
-  const navigate = useNavigate();
+  const { backBtn } = useTg();
+
+  useEffect(() => {
+    backBtn.show();
+  }, []);
 
   const compareTimestamp = (isoString: string) => {
     const inputDate = new Date(isoString);
@@ -39,8 +44,8 @@ const GiftPage: FC = () => {
   const handleAdminBtn = async () => {
     if (currentRoom && currentRoom.id) {
       await startRoom(currentRoom?.id);
-      navigate(`/rooms/${id}`);
     }
+    window.location.reload();
   };
 
   useEffect(() => {
